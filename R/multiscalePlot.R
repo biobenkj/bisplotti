@@ -4,6 +4,7 @@
 #' @param colors RColorBrewer color scheme to use (default: YlGnBu)
 #' @param na_color Color to give NA values (default: darkgray)
 #' @param what Column to plot (default: score)
+#' @param config path to the bin/config.yaml of the multiscale Snakemake
 #' @param chr.to.plot Chromosome to plot, all if NULL (default: NULL)
 #' 
 #' @return a ggplot2 object of the multiscale plot
