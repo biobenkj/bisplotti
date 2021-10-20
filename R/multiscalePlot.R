@@ -1,4 +1,4 @@
-#' Create the multiscale plot from a list of GRanges
+#' Create the multiscale plot from a list of GRangesLists
 #' 
 #' @param grl GRangesList of a single set of multiscale BED files
 #' @param colors RColorBrewer color scheme to use (default: YlGnBu)
@@ -37,6 +37,7 @@ multiscaleMethylationPlot <- function(grl,
                                       colors="YlGnBu",
                                       na_color="darkgray",
                                       what="score",
+                                      config = NULL,
                                       chr.to.plot = NULL) {
 
     # Check inputs are in correct form
@@ -82,30 +83,33 @@ multiscaleMethylationPlot <- function(grl,
     score.matrix$res <- rownames(score.matrix)
     score.matrix.melt <- reshape2::melt(score.matrix, id.vars = "res")
     score.matrix.melt$res <- levels(factor(score.matrix.melt$res))
-
+    
+    # Get the steps for the x axis
+    steps <- getMultiscaleSteps(config)
+    nSteps <- length(steps)
+    
     # Create plot
     g <- ggplot(score.matrix.melt, aes(x = variable, y = res, fill = value)) +
         geom_raster(interpolate = TRUE) +
         #scale_fill_gradientn(colours = colorRampPalette(c("blue","yellow"))(20), na.) +
         scale_fill_distiller(palette = colors, direction = -1, na.value = na_color,
                              name = "Methylation level") +
-        scale_y_discrete(name = "Resolution",
-                           breaks = c("New_chr16_4.0", "New_chr16_5.0",
-                                      "New_chr16_6.0", "New_chr16_7.0"),
-                           labels = c("10kb", "100kb", "1Mb", "10Mb")) +
+        scale_y_discrete(breaks = unique(round(steps,0)), name="",
+                       labels = paste((10^unique(round(steps,0)))/1e6,'Mb')) +
+                           # labels = c("10kb", "100kb", "1Mb", "10Mb")) +
         theme_bw(12) +
         theme(
             axis.title.x = element_blank(),
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
-            #axis.title.y = element_blank(),
-            #axis.text.y = element_blank(),
-            #axis.ticks.y = element_blank(),
-            #axis.text = element_blank(),
-            #axis.ticks = element_blank(),
-            #legend.title = element_blank(),
+            # axis.title.y = element_blank(),
+            # axis.text.y = element_blank(),
+            # axis.ticks.y = element_blank(),
+            # axis.text = element_blank(),
+            # axis.ticks = element_blank(),
+            # legend.title = element_blank(),
         )
-  
+    
   return(g)
 }
 
