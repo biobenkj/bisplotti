@@ -92,8 +92,8 @@ multiscaleGroupAverage <- function(multiscale_means_directory,samples,config,whi
     }
   )
   
-  # Now split this to a list equal to the length of samples2grep
-  # Each element of means.list is a list of nStep granges (similar to if one sample or the data from stats is imported)
+  # Now split this to a list equal to the length of samples
+  # Each element of means.list is a list of nStep granges (similar to if one sample or the data from stats dir is imported)
   means.list <- split(means, ceiling(seq_along(means)/nSteps))
   
   if (!length(samples)==length(means.list)) stop("Length of the means list should be the same as the number of samples.")

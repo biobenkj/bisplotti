@@ -94,7 +94,7 @@ multiscaleMethylationPlot <- function(grl,
         geom_raster(interpolate = TRUE) +
         #scale_fill_gradientn(colours = colorRampPalette(c("blue","yellow"))(20), na.) +
         scale_fill_distiller(palette = colors, direction = -1, na.value = na_color,
-                             name = "Methylation level") +
+                             name = "Methylation level", limits = c(0,1)) +
         scale_y_discrete(breaks = unique(round(steps,0)), name="",
                        labels = paste((10^unique(round(steps,0)))/1e6,'Mb')) +
                            # labels = c("10kb", "100kb", "1Mb", "10Mb")) +
